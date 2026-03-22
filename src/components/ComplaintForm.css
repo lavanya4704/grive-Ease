@@ -1,0 +1,151 @@
+.complaint-form {
+  animation: fadeIn 0.5s ease;
+}
+
+.complaint-form__header {
+  margin-bottom: var(--space-xl);
+}
+
+.complaint-form__title {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+}
+
+.complaint-form__subtitle {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+}
+
+.complaint-form__alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  margin-bottom: var(--space-md);
+  animation: slideInRight 0.3s ease;
+}
+
+.complaint-form__alert--error {
+  background: var(--status-escalated-bg);
+  border: 1px solid var(--status-escalated-border);
+  color: var(--status-escalated);
+}
+
+.complaint-form__alert--success {
+  background: var(--status-resolved-bg);
+  border: 1px solid var(--status-resolved-border);
+  color: var(--status-resolved);
+}
+
+.complaint-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.complaint-form__row {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.complaint-form__upload {
+  position: relative;
+}
+
+.complaint-form__file-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.complaint-form__upload-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 16px;
+  background: var(--bg-input);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.complaint-form__upload:hover .complaint-form__upload-label {
+  border-color: var(--accent-primary);
+  background: var(--accent-glow);
+}
+
+.complaint-form__upload-icon {
+  font-size: 1.3rem;
+}
+
+.complaint-form__toggle-row {
+  padding-top: var(--space-sm);
+}
+
+.complaint-form__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  cursor: pointer;
+}
+
+.complaint-form__toggle input {
+  display: none;
+}
+
+.complaint-form__toggle-slider {
+  width: 44px;
+  height: 24px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  position: relative;
+  transition: background var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.complaint-form__toggle-slider::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  top: 3px;
+  left: 3px;
+  transition: all var(--transition-fast);
+}
+
+.complaint-form__toggle input:checked + .complaint-form__toggle-slider {
+  background: var(--accent-primary);
+}
+
+.complaint-form__toggle input:checked + .complaint-form__toggle-slider::after {
+  transform: translateX(20px);
+  background: white;
+}
+
+.complaint-form__toggle-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.complaint-form__toggle-label {
+  font-size: var(--font-sm);
+  font-weight: 500;
+}
+
+.complaint-form__toggle-hint {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+}
+
+.complaint-form__actions {
+  display: flex;
+  justify-content: flex-end;
+}

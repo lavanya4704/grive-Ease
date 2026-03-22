@@ -1,0 +1,94 @@
+.stats-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  animation: fadeIn 0.5s ease forwards;
+  opacity: 0;
+  transition: transform var(--transition-normal), border-color var(--transition-normal);
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+}
+
+.stats-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.stats-card__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-card__value {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.stats-card__label {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+}
+
+.stats-card__glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Color variants */
+.stats-card--blue .stats-card__icon {
+  background: var(--status-in-progress-bg);
+  color: var(--status-in-progress);
+}
+.stats-card--blue .stats-card__glow { background: var(--status-in-progress); }
+.stats-card--blue:hover { border-color: var(--status-in-progress-border); }
+
+.stats-card--yellow .stats-card__icon {
+  background: var(--status-pending-bg);
+  color: var(--status-pending);
+}
+.stats-card--yellow .stats-card__glow { background: var(--status-pending); }
+.stats-card--yellow:hover { border-color: var(--status-pending-border); }
+
+.stats-card--green .stats-card__icon {
+  background: var(--status-resolved-bg);
+  color: var(--status-resolved);
+}
+.stats-card--green .stats-card__glow { background: var(--status-resolved); }
+.stats-card--green:hover { border-color: var(--status-resolved-border); }
+
+.stats-card--red .stats-card__icon {
+  background: var(--status-escalated-bg);
+  color: var(--status-escalated);
+}
+.stats-card--red .stats-card__glow { background: var(--status-escalated); }
+.stats-card--red:hover { border-color: var(--status-escalated-border); }
+
+.stats-card--purple .stats-card__icon {
+  background: rgba(139, 92, 246, 0.12);
+  color: #a855f7;
+}
+.stats-card--purple .stats-card__glow { background: #a855f7; }
+.stats-card--purple:hover { border-color: rgba(139, 92, 246, 0.3); }
