@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: project-g-backend
+    env: node
+    buildCommand: npm install && mkdir -p server/uploads
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
