@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { getUser, getComplaints, getComplaintStats, getComplaint } from '../utils/api';
 import Sidebar from '../components/Sidebar';
 import ComplaintForm from '../components/ComplaintForm';
@@ -7,9 +8,16 @@ import StatsCard from '../components/StatsCard';
 import StatusBadge from '../components/StatusBadge';
 import './Dashboard.css';
 
+function getViewFromPath(pathname) {
+  if (pathname === '/submit') return 'submit';
+  if (pathname === '/my-complaints') return 'complaints';
+  return 'dashboard';
+}
+
 export default function StudentDashboard() {
   const user = getUser();
-  const [view, setView] = useState('dashboard');
+  const location = useLocation();
+  const [view, setView] = useState(() => getViewFromPath(location.pathname));
   const [complaints, setComplaints] = useState([]);
   const [stats, setStats] = useState(null);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
@@ -34,6 +42,11 @@ export default function StudentDashboard() {
 
   useEffect(() => { fetchData(); }, []);
 
+  // Sync view with URL when sidebar navigation changes the route
+  useEffect(() => {
+    setView(getViewFromPath(location.pathname));
+  }, [location.pathname]);
+
   const handleComplaintClick = async (complaint) => {
     try {
       const detail = await getComplaint(complaint.id);
@@ -49,9 +62,9 @@ export default function StudentDashboard() {
 
       <main className="dashboard-main">
         <header className="dashboard-header">
-          <button className="dashboard-menu-btn" onClick={() => setMobileMenu(true)}>☰</button>
+          <button className="dashboard-menu-btn" onClick={() => setMobileMenu(true)}>Menu</button>
           <div>
-            <h1 className="dashboard-header__title">Welcome, {user?.name || 'Student'} 👋</h1>
+            <h1 className="dashboard-header__title">Welcome, {user?.name || 'Student'}</h1>
             <p className="dashboard-header__subtitle">Track and manage your grievances</p>
           </div>
         </header>
@@ -60,15 +73,15 @@ export default function StudentDashboard() {
           <button
             className={`dashboard-tab ${view === 'dashboard' ? 'dashboard-tab--active' : ''}`}
             onClick={() => setView('dashboard')}
-          >📊 Overview</button>
+          >Overview</button>
           <button
             className={`dashboard-tab ${view === 'submit' ? 'dashboard-tab--active' : ''}`}
             onClick={() => setView('submit')}
-          >✏️ New Complaint</button>
+          >New Complaint</button>
           <button
             className={`dashboard-tab ${view === 'complaints' ? 'dashboard-tab--active' : ''}`}
             onClick={() => setView('complaints')}
-          >📋 My Complaints</button>
+          >My Complaints</button>
         </div>
 
         <div className="dashboard-content">
@@ -76,10 +89,10 @@ export default function StudentDashboard() {
             <div className="animate-fade-in">
               {stats && (
                 <div className="stats-grid">
-                  <StatsCard icon="📝" label="Total Submitted" value={stats.total} color="purple" delay={0} />
-                  <StatsCard icon="⏳" label="Pending" value={stats.pending} color="yellow" delay={100} />
-                  <StatsCard icon="🔄" label="In Progress" value={stats.inProgress} color="blue" delay={200} />
-                  <StatsCard icon="✅" label="Resolved" value={stats.resolved} color="green" delay={300} />
+                  <StatsCard icon="total" label="Total Submitted" value={stats.total} color="purple" delay={0} />
+                  <StatsCard icon="pending" label="Pending" value={stats.pending} color="yellow" delay={100} />
+                  <StatsCard icon="progress" label="In Progress" value={stats.inProgress} color="blue" delay={200} />
+                  <StatsCard icon="resolved" label="Resolved" value={stats.resolved} color="green" delay={300} />
                 </div>
               )}
 
@@ -89,7 +102,6 @@ export default function StudentDashboard() {
                   <div className="dashboard-loading">Loading...</div>
                 ) : complaints.length === 0 ? (
                   <div className="dashboard-empty">
-                    <span className="dashboard-empty__icon">📭</span>
                     <p>No complaints submitted yet.</p>
                     <button className="btn btn-primary" onClick={() => setView('submit')}>Submit Your First Complaint</button>
                   </div>
@@ -117,7 +129,7 @@ export default function StudentDashboard() {
                 <div className="dashboard-loading">Loading...</div>
               ) : complaints.length === 0 ? (
                 <div className="dashboard-empty">
-                  <span className="dashboard-empty__icon">📭</span>
+                  <span className="dashboard-empty__icon">[Empty]</span>
                   <p>No complaints found.</p>
                 </div>
               ) : (
@@ -138,7 +150,7 @@ export default function StudentDashboard() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Complaint #{selectedComplaint.id}</h2>
-              <button className="btn btn-ghost btn-sm" onClick={() => setSelectedComplaint(null)}>✕</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => setSelectedComplaint(null)}>X</button>
             </div>
             <div className="modal-body">
               <div className="detail-row">
@@ -174,7 +186,7 @@ export default function StudentDashboard() {
                       <div className="timeline-item__content">
                         <span className="timeline-item__action">{log.details}</span>
                         <span className="timeline-item__time">
-                          {log.performer_name && `by ${log.performer_name} · `}
+                          {log.performer_name && `by ${log.performer_name} - `}
                           {new Date(log.created_at + 'Z').toLocaleString()}
                         </span>
                       </div>
@@ -190,7 +202,7 @@ export default function StudentDashboard() {
                   <div className="detail-attachments__list">
                     {selectedComplaint.attachments.map((att) => (
                       <a key={att.id} href={att.file_url} target="_blank" rel="noopener noreferrer" className="detail-attachment">
-                        📎 {att.original_name}
+                        {att.original_name}
                       </a>
                     ))}
                   </div>

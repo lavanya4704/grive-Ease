@@ -8,26 +8,26 @@ const roleConfig = {
     label: 'Student',
     color: '#6366f1',
     links: [
-      { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-      { path: '/submit', label: 'New Complaint', icon: '✏️' },
-      { path: '/my-complaints', label: 'My Complaints', icon: '📋' },
+      { path: '/dashboard', label: 'Dashboard', icon: '' },
+      { path: '/submit', label: 'New Complaint', icon: '' },
+      { path: '/my-complaints', label: 'My Complaints', icon: '' },
     ]
   },
   'sub-admin': {
     label: 'Sub-Admin',
     color: '#f59e0b',
     links: [
-      { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-      { path: '/assigned', label: 'Assigned', icon: '📥' },
+      { path: '/dashboard', label: 'Dashboard', icon: '' },
+      { path: '/assigned', label: 'Assigned', icon: '' },
     ]
   },
   admin: {
     label: 'Administrator',
     color: '#ef4444',
     links: [
-      { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-      { path: '/all-complaints', label: 'All Complaints', icon: '📋' },
-      { path: '/escalated', label: 'Escalated', icon: '🔴' },
+      { path: '/dashboard', label: 'Dashboard', icon: '' },
+      { path: '/all-complaints', label: 'All Complaints', icon: '' },
+      { path: '/escalated', label: 'Escalated', icon: '' },
     ]
   }
 };
@@ -48,7 +48,6 @@ export default function Sidebar({ isMobileOpen, onCloseMobile }) {
       <aside className={`sidebar ${isMobileOpen ? 'sidebar--mobile-open' : ''}`}>
         <div className="sidebar__header">
           <div className="sidebar__logo">
-            <div className="sidebar__logo-icon">⚡</div>
             <div className="sidebar__logo-text">
               <span className="sidebar__brand">GrievEase</span>
               <span className="sidebar__tagline">Grievance Portal</span>
@@ -79,7 +78,7 @@ export default function Sidebar({ isMobileOpen, onCloseMobile }) {
             </div>
             <div className="sidebar__user-info">
               <span className="sidebar__user-name">{user?.name || 'User'}</span>
-              <span className="sidebar__user-role">{config.label}{user?.category ? ` · ${user.category}` : ''}</span>
+              <span className="sidebar__user-role">{config.label}{user?.category ? ` - ${user.category}` : ''}</span>
             </div>
           </div>
           <button className="btn btn-ghost btn-sm sidebar__logout" onClick={handleLogout}>

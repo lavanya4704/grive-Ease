@@ -38,7 +38,7 @@ export default function ComplaintCard({ complaint, onClick }) {
             <span className="complaint-card__submitter">by {complaint.submitter_name}</span>
           ) : null}
           {complaint.assigned_name && (
-            <span className="complaint-card__assigned">→ {complaint.assigned_name}</span>
+            <span className="complaint-card__assigned">Assigned to {complaint.assigned_name}</span>
           )}
         </div>
       </div>

@@ -37,7 +37,6 @@ export default function Signup() {
 
       <div className="auth-card">
         <div className="auth-card__header">
-          <div className="auth-card__logo">⚡</div>
           <h1 className="auth-card__title">Create Account</h1>
           <p className="auth-card__subtitle">Join the GrievEase Grievance Portal</p>
         </div>
@@ -86,7 +85,7 @@ export default function Signup() {
           </div>
 
           <button type="submit" className="btn btn-primary btn-lg auth-card__submit" disabled={loading} id="signup-btn">
-            {loading ? '⏳ Creating account...' : 'Create Account'}
+            {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
 

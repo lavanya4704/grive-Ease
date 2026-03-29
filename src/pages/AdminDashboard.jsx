@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { getComplaints, getComplaintStats, getComplaint, updateComplaintStatus, reassignComplaint, getSubAdmins } from '../utils/api';
 import Sidebar from '../components/Sidebar';
 import ComplaintCard from '../components/ComplaintCard';
@@ -6,8 +7,15 @@ import StatsCard from '../components/StatsCard';
 import StatusBadge from '../components/StatusBadge';
 import './Dashboard.css';
 
+function getViewFromPath(pathname) {
+  if (pathname === '/all-complaints') return 'all';
+  if (pathname === '/escalated') return 'escalated';
+  return 'dashboard';
+}
+
 export default function AdminDashboard() {
-  const [view, setView] = useState('dashboard');
+  const location = useLocation();
+  const [view, setView] = useState(() => getViewFromPath(location.pathname));
   const [complaints, setComplaints] = useState([]);
   const [stats, setStats] = useState(null);
   const [subAdmins, setSubAdmins] = useState([]);
@@ -43,6 +51,13 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => { fetchData(); }, [filter]);
+
+  // Sync view with URL when sidebar navigation changes the route
+  useEffect(() => {
+    const newView = getViewFromPath(location.pathname);
+    setView(newView);
+    if (newView === 'escalated') setFilter('escalated');
+  }, [location.pathname]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -98,9 +113,9 @@ export default function AdminDashboard() {
 
       <main className="dashboard-main">
         <header className="dashboard-header">
-          <button className="dashboard-menu-btn" onClick={() => setMobileMenu(true)}>☰</button>
+          <button className="dashboard-menu-btn" onClick={() => setMobileMenu(true)}>Menu</button>
           <div>
-            <h1 className="dashboard-header__title">Admin Control Center 👑</h1>
+            <h1 className="dashboard-header__title">Admin Control Center</h1>
             <p className="dashboard-header__subtitle">Monitor and manage all grievances across departments</p>
           </div>
         </header>
@@ -109,16 +124,16 @@ export default function AdminDashboard() {
           <button
             className={`dashboard-tab ${view === 'dashboard' ? 'dashboard-tab--active' : ''}`}
             onClick={() => setView('dashboard')}
-          >📊 Overview</button>
+          >Overview</button>
           <button
             className={`dashboard-tab ${view === 'all' ? 'dashboard-tab--active' : ''}`}
             onClick={() => setView('all')}
-          >📋 All Complaints</button>
+          >All Complaints</button>
           <button
             className={`dashboard-tab ${view === 'escalated' ? 'dashboard-tab--active' : ''}`}
             onClick={() => { setView('escalated'); setFilter('escalated'); }}
           >
-            🔴 Escalated
+            Escalated
             {stats && stats.escalated > 0 && (
               <span style={{ 
                 marginLeft: 6, 
@@ -134,7 +149,7 @@ export default function AdminDashboard() {
           <button
             className={`dashboard-tab ${view === 'analytics' ? 'dashboard-tab--active' : ''}`}
             onClick={() => setView('analytics')}
-          >📈 Analytics</button>
+          >Analytics</button>
         </div>
 
         <div className="dashboard-content">
@@ -143,11 +158,11 @@ export default function AdminDashboard() {
             <div className="animate-fade-in">
               {stats && (
                 <div className="stats-grid">
-                  <StatsCard icon="📊" label="Total Complaints" value={stats.total} color="purple" delay={0} />
-                  <StatsCard icon="⏳" label="Pending" value={stats.pending} color="yellow" delay={100} />
-                  <StatsCard icon="🔄" label="In Progress" value={stats.inProgress} color="blue" delay={200} />
-                  <StatsCard icon="✅" label="Resolved" value={stats.resolved} color="green" delay={300} />
-                  <StatsCard icon="🔴" label="Escalated" value={stats.escalated} color="red" delay={400} />
+                  <StatsCard icon="total" label="Total Complaints" value={stats.total} color="purple" delay={0} />
+                  <StatsCard icon="pending" label="Pending" value={stats.pending} color="yellow" delay={100} />
+                  <StatsCard icon="progress" label="In Progress" value={stats.inProgress} color="blue" delay={200} />
+                  <StatsCard icon="resolved" label="Resolved" value={stats.resolved} color="green" delay={300} />
+                  <StatsCard icon="escalated" label="Escalated" value={stats.escalated} color="red" delay={400} />
                 </div>
               )}
 
@@ -155,7 +170,7 @@ export default function AdminDashboard() {
               {escalatedComplaints.length > 0 && (
                 <div className="dashboard-section">
                   <h2 className="dashboard-section__title" style={{ color: 'var(--status-escalated)' }}>
-                    🔴 Escalated — Requires Immediate Attention
+                    Escalated - Requires Immediate Attention
                   </h2>
                   <div className="complaints-grid">
                     {escalatedComplaints.slice(0, 5).map((c) => (
@@ -169,8 +184,7 @@ export default function AdminDashboard() {
                 <h2 className="dashboard-section__title">Recent Activity</h2>
                 {complaints.slice(0, 8).length === 0 ? (
                   <div className="dashboard-empty">
-                    <span className="dashboard-empty__icon">📭</span>
-                    <p>No complaints yet.</p>
+                    <p>No complaints found.</p>
                   </div>
                 ) : (
                   <div className="complaints-grid">
@@ -214,7 +228,6 @@ export default function AdminDashboard() {
                 <div className="dashboard-loading">Loading...</div>
               ) : complaints.length === 0 ? (
                 <div className="dashboard-empty">
-                  <span className="dashboard-empty__icon">🔍</span>
                   <p>No complaints match your filters.</p>
                 </div>
               ) : (
@@ -237,7 +250,6 @@ export default function AdminDashboard() {
                 <div className="dashboard-loading">Loading...</div>
               ) : complaints.filter(c => c.status === 'escalated').length === 0 ? (
                 <div className="dashboard-empty">
-                  <span className="dashboard-empty__icon">🎉</span>
                   <p>No escalated complaints! Everything is under control.</p>
                 </div>
               ) : (
@@ -255,15 +267,9 @@ export default function AdminDashboard() {
             <div className="animate-fade-in">
               <h2 className="dashboard-section__title">Department Analytics</h2>
               <div className="stats-grid" style={{ marginBottom: 'var(--space-xl)' }}>
-                <StatsCard icon="📊" label="Total" value={stats.total} color="purple" delay={0} />
-                <StatsCard
-                  icon="📈"
-                  label="Resolution Rate"
-                  value={stats.total > 0 ? `${Math.round((stats.resolved / stats.total) * 100)}%` : '0%'}
-                  color="green"
-                  delay={100}
-                />
-                <StatsCard icon="🔴" label="Escalation Rate" value={stats.total > 0 ? `${Math.round((stats.escalated / stats.total) * 100)}%` : '0%'} color="red" delay={200} />
+                <StatsCard icon="chart" label="Total" value={stats.total} color="purple" delay={0} />
+                <StatsCard icon="rate" label="Resolution Rate" value={stats.total > 0 ? `${Math.round((stats.resolved / stats.total) * 100)}%` : '0%'} color="green" delay={100} />
+                <StatsCard icon="escalated" label="Escalation Rate" value={stats.total > 0 ? `${Math.round((stats.escalated / stats.total) * 100)}%` : '0%'} color="red" delay={200} />
               </div>
 
               <div className="analytics-grid">
@@ -326,7 +332,7 @@ export default function AdminDashboard() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Complaint #{selectedComplaint.id}</h2>
-              <button className="btn btn-ghost btn-sm" onClick={() => setSelectedComplaint(null)}>✕</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => setSelectedComplaint(null)}>X</button>
             </div>
             <div className="modal-body">
               <div className="detail-row">
@@ -367,7 +373,7 @@ export default function AdminDashboard() {
                   <div className="detail-attachments__list">
                     {selectedComplaint.attachments.map((att) => (
                       <a key={att.id} href={att.file_url} target="_blank" rel="noopener noreferrer" className="detail-attachment">
-                        📎 {att.original_name}
+                        {att.original_name}
                       </a>
                     ))}
                   </div>
@@ -384,7 +390,7 @@ export default function AdminDashboard() {
                       <div className="timeline-item__content">
                         <span className="timeline-item__action">{log.details}</span>
                         <span className="timeline-item__time">
-                          {log.performer_name && `by ${log.performer_name} · `}
+                          {log.performer_name && `by ${log.performer_name} - `}
                           {new Date(log.created_at + 'Z').toLocaleString()}
                         </span>
                       </div>
@@ -414,13 +420,13 @@ export default function AdminDashboard() {
                         className="status-btn status-btn--in-progress"
                         onClick={() => handleStatusUpdate('in-progress')}
                         disabled={updating}
-                      >🔄 In Progress</button>
+                      >In Progress</button>
                     )}
                     <button
                       className="status-btn status-btn--resolved"
                       onClick={() => handleStatusUpdate('resolved')}
                       disabled={updating}
-                    >✅ Resolve</button>
+                    >Resolve</button>
                   </div>
                 </div>
               )}

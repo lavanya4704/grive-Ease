@@ -90,7 +90,7 @@ export default function ComplaintForm({ onSuccess }) {
 
         <div className="complaint-form__row">
           <div className="input-group" style={{ flex: 1 }}>
-            <label htmlFor="category">Category (optional — AI auto-detects)</label>
+            <label htmlFor="category">Category (optional - AI auto-detects)</label>
             <select
               id="category"
               className="input-field"
@@ -117,7 +117,6 @@ export default function ComplaintForm({ onSuccess }) {
               className="complaint-form__file-input"
             />
             <div className="complaint-form__upload-label">
-              <span className="complaint-form__upload-icon">📎</span>
               <span>{files.length > 0 ? `${files.length} file(s) selected` : 'Click or drag files here'}</span>
             </div>
           </div>
@@ -142,7 +141,7 @@ export default function ComplaintForm({ onSuccess }) {
 
       <div className="complaint-form__actions">
         <button type="submit" className="btn btn-primary btn-lg" disabled={loading} id="submit-complaint-btn">
-          {loading ? '⏳ Submitting...' : '🚀 Submit Complaint'}
+          {loading ? 'Submitting...' : 'Submit Complaint'}
         </button>
       </div>
     </form>

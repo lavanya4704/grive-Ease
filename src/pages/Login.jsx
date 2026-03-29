@@ -36,7 +36,6 @@ export default function Login() {
 
       <div className="auth-card">
         <div className="auth-card__header">
-          <div className="auth-card__logo">⚡</div>
           <h1 className="auth-card__title">Welcome Back</h1>
           <p className="auth-card__subtitle">Sign in to GrievEase Grievance Portal</p>
         </div>
@@ -71,7 +70,7 @@ export default function Login() {
           </div>
 
           <button type="submit" className="btn btn-primary btn-lg auth-card__submit" disabled={loading} id="login-btn">
-            {loading ? '⏳ Signing in...' : 'Sign In'}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
@@ -83,13 +82,13 @@ export default function Login() {
           <p className="auth-card__demo-title">Demo Accounts</p>
           <div className="auth-card__demo-accounts">
             <button type="button" className="auth-card__demo-btn" onClick={() => { setEmail('student1@campus.edu'); setPassword('student123'); }}>
-              🎓 Student
+              Student
             </button>
             <button type="button" className="auth-card__demo-btn" onClick={() => { setEmail('academic@campus.edu'); setPassword('sub123'); }}>
-              🧑‍💼 Sub-Admin
+              Sub-Admin
             </button>
             <button type="button" className="auth-card__demo-btn" onClick={() => { setEmail('admin@campus.edu'); setPassword('admin123'); }}>
-              👑 Admin
+              Admin
             </button>
           </div>
         </div>
