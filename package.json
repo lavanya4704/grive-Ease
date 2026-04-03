@@ -1,8 +1,8 @@
 {
-  "name": "project-g",
+  "name": "grive-ease",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://lavanya4704.github.io/project-g",
+  "homepage": "https://lavanya4704.github.io/grive-Ease",
   "scripts": {
     "dev": "vite",
     "server": "node server/index.js",
