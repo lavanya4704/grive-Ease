@@ -37,7 +37,7 @@ export default function Login() {
       <div className="auth-card">
         <div className="auth-card__header">
           <h1 className="auth-card__title">Welcome Back</h1>
-          <p className="auth-card__subtitle">Sign in to GrievEase Grievance Portal</p>
+          <p className="auth-card__subtitle">Sign in to AnonVoice Grievance Portal</p>
         </div>
 
         {error && <div className="auth-card__error">{error}</div>}

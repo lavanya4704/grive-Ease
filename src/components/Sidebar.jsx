@@ -49,7 +49,7 @@ export default function Sidebar({ isMobileOpen, onCloseMobile }) {
         <div className="sidebar__header">
           <div className="sidebar__logo">
             <div className="sidebar__logo-text">
-              <span className="sidebar__brand">GrievEase</span>
+              <span className="sidebar__brand">AnonVoice</span>
               <span className="sidebar__tagline">Grievance Portal</span>
             </div>
           </div>
